@@ -1,6 +1,6 @@
 window.APP_CONFIG = {
   // Включите true для локального демо с файлом ./sample-sheet.csv
-  useSampleData: false,
+  useSampleData: true,
 
   // Брендинг
   brandName: "MindCore project",
