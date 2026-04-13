@@ -307,15 +307,20 @@ a { color: inherit; }
   font-size: 13px;
 }
 
-.content-card,
+.content-card {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  line-height: 1.6;
+}
+
 .attachments {
   padding: 14px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.02);
 }
-
-.content-card { line-height: 1.6; }
 
 .attachments ul { margin: 10px 0 0; padding-left: 16px; }
 .attachments li { margin-bottom: 8px; }
