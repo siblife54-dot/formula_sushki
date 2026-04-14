@@ -143,10 +143,14 @@
   }
 
   function normalizeLesson(raw) {
+    var isLockedValue = String(raw.is_locked || "").trim();
+    var isLocked = isLockedValue === "1";
+
     return {
       course_id: raw.course_id,
       lesson_id: raw.lesson_id,
       day_number: Number(raw.day_number || 0),
+      is_locked: isLocked,
       title: raw.title || "Без названия",
       subtitle: raw.subtitle || "",
       preview_image_url: raw.preview_image_url || "",
@@ -197,7 +201,8 @@
 
     lessons.forEach(function (lesson) {
       var isSequentiallyOpen = lesson.day_number <= threshold;
-      map[lesson.lesson_id] = isSequentiallyOpen;
+      var isLockedBySheet = lesson.is_locked === true;
+      map[lesson.lesson_id] = isLockedBySheet ? false : isSequentiallyOpen;
     });
 
     return {
