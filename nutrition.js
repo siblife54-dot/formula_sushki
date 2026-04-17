@@ -74,17 +74,11 @@
     }
 
     function computePlan(input) {
-      var sexShift = input.sex === "male" ? 5 : -161;
-      var bmr = 10 * input.weight + 6.25 * input.height - 5 * input.age + sexShift;
-      var targetCalories = bmr * input.activityFactor * input.goalFactor;
-
-      var caloriesFloor = input.sex === "male" ? 1400 : 1200;
-      var calories = round(Math.max(targetCalories, caloriesFloor));
-
-      var protein = round(input.weight * input.proteinPerKg);
-      var fats = round(input.weight * input.fatPerKg);
-      var carbsCalories = calories - protein * 4 - fats * 9;
-      var carbs = round(Math.max(carbsCalories / 4, 0));
+      var protein = round(input.weight * 1.5);
+      var fats = round(input.weight * 0.8);
+      var carbsMultiplier = input.goal === "cut" ? 2 : (input.goal === "loss" ? 3 : 4);
+      var carbs = round(input.weight * carbsMultiplier);
+      var calories = round(protein * 4 + carbs * 4 + fats * 9);
 
       return {
         calories: calories,
@@ -230,19 +224,13 @@
         return;
       }
 
-      var goalFactor = raw.goal === "cut" ? 0.8 : (raw.goal === "loss" ? 0.85 : 1);
-      var proteinPerKg = raw.goal === "cut" ? 2 : (raw.goal === "loss" ? 1.9 : 1.8);
-      var fatPerKg = raw.goal === "maintain" ? 1 : (raw.goal === "loss" ? 0.9 : 0.8);
-
       var result = computePlan({
         age: raw.age,
         height: raw.height,
         weight: raw.weight,
         sex: raw.sex,
         activityFactor: Number(raw.activity),
-        goalFactor: goalFactor,
-        proteinPerKg: proteinPerKg,
-        fatPerKg: fatPerKg
+        goal: raw.goal
       });
 
       var plan = {
